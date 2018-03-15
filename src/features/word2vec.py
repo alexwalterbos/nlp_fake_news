@@ -1,3 +1,5 @@
+#note that you need to download the word2vec bin from google before you run this class, for more information see data_files\readme.txt
+
 import gensim
 import numpy as np
 from sklearn.preprocessing import normalize
