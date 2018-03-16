@@ -31,12 +31,15 @@ with open('smalldata.pkl', 'rb') as file:
 	
 	countFeature["count_articleBody_trigram"] = list(data.apply(lambda x: len(x["articleBody_trigram"]), axis=1))
 	countFeature["count_unique_articleBody_trigram"] = list(data.apply(lambda x: len(set(x["articleBody_trigram"])), axis=1))
-	countFeature["ratio_unique_articleBody_trigram"] = [x/y for x,y in zip(countFeature["count_articleBody_trigram"],countFeature["count_unique_articleBody_trigram"])]	
-	
+	countFeature["ratio_unique_articleBody_trigram"] = [x/y for x,y in zip(countFeature["count_articleBody_trigram"],countFeature["count_unique_articleBody_trigram"])]		
 	
 	countFeature["count_Headline_unigram_in_articleBody"] = list(data.apply(lambda x: sum([1. for w in x["Headline_unigram"] if w in set(x["articleBody_unigram"])]), axis=1)) 	
 	countFeature["count_Headline_bigram_in_articleBody"] = list(data.apply(lambda x: sum([1. for w in x["Headline_bigram"] if w in set(x["articleBody_bigram"])]), axis=1)) 	
-	countFeature["count_Headline_trigram_in_articleBody"] = list(data.apply(lambda x: sum([1. for w in x["Headline_trigram"] if w in set(x["articleBody_trigram"])]), axis=1)) 	
+	countFeature["count_Headline_trigram_in_articleBody"] = list(data.apply(lambda x: sum([1. for w in x["Headline_trigram"] if w in set(x["articleBody_trigram"])]), axis=1))
+
+	countFeature["ratio_Headline_unigram_in_articleBody"] = [x/y for x,y in zip(countFeature["count_Headline_unigram_in_articleBody"],countFeature["count_Headline_unigram"])]	 	
+	countFeature["ratio_Headline_bigram_in_articleBody"] = [x/y for x,y in zip(countFeature["count_Headline_bigram_in_articleBody"],countFeature["count_Headline_bigram"])]	
+	countFeature["ratio_Headline_trigram_in_articleBody"] = [x/y for x,y in zip(countFeature["count_Headline_trigram_in_articleBody"],countFeature["count_Headline_trigram"])]
 	
 	print(countFeature)	
 
