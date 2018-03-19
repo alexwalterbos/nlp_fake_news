@@ -54,9 +54,9 @@ for i in range(0, totalNum):
 simVecTrain = simVec[:trainNum]
 if testNum > 0:
     simVecTest = simVec[trainNum:]
-print(len(simVec))
 
 with open('feature_pickles/word2vec_sim_train.pkl', "wb") as outfile:
     pickle.dump(simVecTrain, outfile, -1)
 with open('feature_pickles/word2vec_sim_test.pkl', "wb") as outfile:
     pickle.dump(simVecTest, outfile, -1)
+print('made 2 pickle files: word2vec_sim_train, word2vec_sim_test')
