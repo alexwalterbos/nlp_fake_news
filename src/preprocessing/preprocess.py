@@ -104,8 +104,7 @@ def extract_tokens(
     return filtered_stemmed_tokens
 
 
-if __name__ == '__main__':
-    global data
+def preprocess():
     if len(sys.argv) > 0 and 'read' in sys.argv:
         data = read_data_from_premade_file()
     else:
@@ -114,3 +113,5 @@ if __name__ == '__main__':
         print(data.axes)
 
         print('Success!')
+
+    return data
