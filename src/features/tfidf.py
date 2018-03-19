@@ -7,7 +7,7 @@ import numpy as np
 with open('data_files/smalldata.pkl', 'rb') as f:
     data = pickle.load(f, encoding='latin1')
 headline = data['Headline_unigram']
-article = data['articleBody_unigram'] 
+article = data['articleBody_unigram']
 
 trainNum = 100
 testNum = 100
