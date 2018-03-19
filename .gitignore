@@ -6,3 +6,4 @@ __pycache__
 .\src\features\data_files
 .\src\features\data_files\GoogleNews-vectors-negative300.bin
 src/features/data_files/GoogleNews-vectors-negative300.bin
+
