@@ -2,11 +2,9 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import pickle
 
+
 def generate_tfidf_feature(data, numTest=0):
 
-    # load data
-    with open('data_files/smalldata.pkl', 'rb') as f:
-        data = pickle.load(f, encoding='latin1')
     headline = data['Headline_unigram']
     article = data['articleBody_unigram']
 
@@ -27,7 +25,7 @@ def generate_tfidf_feature(data, numTest=0):
 
     # First use a tfidfVectorizer to find all words
     vec = TfidfVectorizer(ngram_range=(1, 3), max_df=.8, min_df=2)
-    vec.fit(text_per_article)  # Tf-idf calculated on the combined training + test set
+    vec.fit(text_per_article)  # errors
     vocabulary = vec.vocabulary_
 
     # Make different vectorizers for headlines and articles, it is necesary to use 2 different vectorizers
@@ -60,28 +58,30 @@ def generate_tfidf_feature(data, numTest=0):
     # store in pickle files
     with open('feature_pickles/tfidf_head_train.pkl', "wb") as outfile:
         pickle.dump(headlineTrain, outfile, -1)
-    with open('feature_pickles/tfidf_head_test.pkl', "wb") as outfile:
-        pickle.dump(headlineTest, outfile, -1)
     with open('feature_pickles/tfidf_article_train.pkl', "wb") as outfile:
         pickle.dump(articleTrain, outfile, -1)
-    with open('feature_pickles/tfidf_article_test.pkl', "wb") as outfile:
-        pickle.dump(articleTest, outfile, -1)
     with open('feature_pickles/tfidf_sim_train.pkl', "wb") as outfile:
         pickle.dump(simTfidfTrain, outfile, -1)
-    with open('feature_pickles/tfidf_sim_test.pkl', "wb") as outfile:
-        pickle.dump(simTfidfTest, outfile, -1)
-    print('made 6 pickle files: head_train, head_test, article_train, article_test, sim_train, sim_test')
+    if(numTest>0):
+        with open('feature_pickles/tfidf_head_test.pkl', "wb") as outfile:
+            pickle.dump(headlineTest, outfile, -1)
+        with open('feature_pickles/tfidf_article_test.pkl', "wb") as outfile:
+            pickle.dump(articleTest, outfile, -1)
+        with open('feature_pickles/tfidf_sim_test.pkl', "wb") as outfile:
+            pickle.dump(simTfidfTest, outfile, -1)
 
-def read(self, header='train'):
-    filename_hvec = "tfidf_head_%s" % header
+    print('made 6 pickle files')
+
+def read(header='train'):
+    filename_hvec = "feature_pickles/tfidf_head_%s" % header
     with open(filename_hvec, "rb") as infile:
         headlineVec = pickle.load(infile)
 
-    filename_bvec = "%tfidf_article_%s" % header
+    filename_bvec = "feature_pickles/%tfidf_article_%s" % header
     with open(filename_bvec, "rb") as infile:
         bodyVec = pickle.load(infile)
 
-    filename_simvec = "tfidf_sim_%s" % header
+    filename_simvec = "feature_pickles/tfidf_sim_%s" % header
     with open(filename_simvec, "rb") as infile:
         simVec = pickle.load(infile)
 
