@@ -1,6 +1,6 @@
 *.egg-info
 .idea
-.src\features\data_files
+src/features/data_files/*
 *.pkl
 __pycache__
 .\src\features\data_files
