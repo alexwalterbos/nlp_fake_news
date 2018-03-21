@@ -21,7 +21,7 @@ def generate_tfidf_feature(data, numTest=0):
     text_per_article = []
     for i in range(0, totalNum):
         text = headlineNoVec[i] + ' ' + articleNoVec[i]
-    text_per_article.append(text)
+        text_per_article.append(text)
 
     # First use a tfidfVectorizer to find all words
     vec = TfidfVectorizer(ngram_range=(1, 3), max_df=.8, min_df=2)
