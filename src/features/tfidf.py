@@ -25,7 +25,7 @@ def generate_tfidf_feature(data, numTest=0):
 
     # First use a tfidfVectorizer to find all words
     vec = TfidfVectorizer(ngram_range=(1, 3), max_df=.8, min_df=2)
-    vec.fit(text_per_article)  # errors
+    vec.fit(text_per_article)
     vocabulary = vec.vocabulary_
 
     # Make different vectorizers for headlines and articles, it is necesary to use 2 different vectorizers
