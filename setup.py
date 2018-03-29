@@ -15,5 +15,10 @@ setup(
         'pandas',
         # The natural language toolkit
         'nltk',
+		
+	#vector space modelling toolkit
+	'gensim',
+	#machine learning lib with a lot of usefull tools
+	'sklearn'
     ]
 )
