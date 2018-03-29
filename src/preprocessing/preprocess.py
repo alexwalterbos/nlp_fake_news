@@ -112,7 +112,7 @@ def extract_tokens(
         word_pattern=word_pattern
 ):
     # Compile a pattern based on `word_pattern` which is a regex that filters out entire words.
-    pattern = re.compile(word_pattern, flags=re.UNICODE | re.LOCALE)
+    pattern = re.compile(word_pattern)
     # Apply a stemmer to all tokens that match the pattern
     stemmed_tokens = [stemmer.stem(x.lower()) for x in pattern.findall(line)]
     # Filter out stopwords to retain only useful words.
