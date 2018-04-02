@@ -1,7 +1,21 @@
+import sys
+
+from features.features import extract_features
 from preprocessing.preprocess import preprocess
-from features import features
+
+
+def main(readfile, limit):
+    data = preprocess(readfile, limit)
+    extractedFeatures = extract_features(data)
+
 
 if __name__ == '__main__':
-    data = preprocess()
-    print(data.shape)
-    extractedFeatures = features.extract_features(data)
+    readfile = None
+    limit = None
+    shouldReadFromFile = len(sys.argv) > 0 and 'read' in sys.argv
+    if shouldReadFromFile:
+        readfile = sys.argv[sys.argv.index('read') + 1]
+    limit = -1
+    if len(sys.argv) > 0 and 'limit' in sys.argv:
+        limit = int(sys.argv[sys.argv.index('limit') + 1])
+    main(readfile, limit)

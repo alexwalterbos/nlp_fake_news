@@ -1,25 +1,29 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+from util import test_set_size, train_set_size
 import pickle
 
 
-def generate_tfidf_feature(data, numTest=0):
-
+def generate_tfidf_feature(data):
     headline = data['Headline_unigram']
     article = data['articleBody_unigram']
 
+    testNum = test_set_size(data)
+    trainNum = train_set_size(data)
+
     # Number of train and test articles
     totalNum = len(headline)
-    testNum = numTest
     trainNum = totalNum - testNum
 
     # join the individual words into a sentence ({{'I', 'ate', 'pie'},...} becomes {{'I ate pie'},...})
-    headlineNoVec = headline.map(lambda x: ' '.join(x))
-    articleNoVec = article.map(lambda x: ' '.join(x))
+    headlineNoVec = headline.map(lambda x: ' '.join(x)).tolist()
+    articleNoVec = article.map(lambda x: ' '.join(x)).tolist()
+
+    assert trainNum is testNum  # or combining headlines and articles will fail
 
     # Combine headlines and articles
     text_per_article = []
-    for i in range(0, totalNum):
+    for i in range(0, trainNum):
         text = headlineNoVec[i] + ' ' + articleNoVec[i]
         text_per_article.append(text)
 
@@ -62,7 +66,7 @@ def generate_tfidf_feature(data, numTest=0):
         pickle.dump(articleTrain, outfile, -1)
     with open('feature_pickles/tfidf_sim_train.pkl', "wb") as outfile:
         pickle.dump(simTfidfTrain, outfile, -1)
-    if(numTest>0):
+    if testNum > 0:
         with open('feature_pickles/tfidf_head_test.pkl', "wb") as outfile:
             pickle.dump(headlineTest, outfile, -1)
         with open('feature_pickles/tfidf_article_test.pkl', "wb") as outfile:
@@ -70,7 +74,10 @@ def generate_tfidf_feature(data, numTest=0):
         with open('feature_pickles/tfidf_sim_test.pkl', "wb") as outfile:
             pickle.dump(simTfidfTest, outfile, -1)
 
-    print('made 6 pickle files')
+    print('[TF-IDF] Made 6 pickle files')
+
+    return [headlineTrain, articleTrain, headlineTest, articleTest]
+
 
 def read(header='train'):
     filename_hvec = "feature_pickles/tfidf_head_%s" % header
