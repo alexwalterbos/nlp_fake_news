@@ -1,11 +1,11 @@
 import sys
 
 from features.features import extract_features
-from preprocessing.preprocess import preprocess
+from preprocessing.preprocess import load_and_preprocess
 
 
 def main(readfile, limit):
-    data = preprocess(readfile, limit)
+    data = load_and_preprocess(readfile, limit)
     extractedFeatures = extract_features(data)
 
 

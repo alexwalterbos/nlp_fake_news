@@ -59,24 +59,7 @@ def generate_tfidf_feature(data):
     simTfidfTrain = simVec[:trainNum]
     simTfidfTest = simVec[trainNum:]
 
-    # store in pickle files
-    with open('feature_pickles/tfidf_head_train.pkl', "wb") as outfile:
-        pickle.dump(headlineTrain, outfile, -1)
-    with open('feature_pickles/tfidf_article_train.pkl', "wb") as outfile:
-        pickle.dump(articleTrain, outfile, -1)
-    with open('feature_pickles/tfidf_sim_train.pkl', "wb") as outfile:
-        pickle.dump(simTfidfTrain, outfile, -1)
-    if testNum > 0:
-        with open('feature_pickles/tfidf_head_test.pkl', "wb") as outfile:
-            pickle.dump(headlineTest, outfile, -1)
-        with open('feature_pickles/tfidf_article_test.pkl', "wb") as outfile:
-            pickle.dump(articleTest, outfile, -1)
-        with open('feature_pickles/tfidf_sim_test.pkl', "wb") as outfile:
-            pickle.dump(simTfidfTest, outfile, -1)
-
-    print('[TF-IDF] Made 6 pickle files')
-
-    return [headlineTrain, articleTrain, headlineTest, articleTest]
+    return [headlineTfidf, articleTfidf, simVec]
 
 
 def read(header='train'):

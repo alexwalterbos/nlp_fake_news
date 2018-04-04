@@ -118,7 +118,7 @@ def extract_tokens(
     return filtered_stemmed_tokens
 
 
-def preprocess(readfile, limit):
+def load_and_preprocess(readfile, limit):
     # Check for read argument, and load data from provided file
     if readfile is not None:
         data = read_data_from_premade_file(readfile)

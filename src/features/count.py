@@ -68,19 +68,4 @@ def generate_count_feature(data):
                                                              zip(countFeature["count_Headline_trigram_in_articleBody"],
                                                                  countFeature["count_Headline_trigram"])]
 
-    train = data[~data['target'].isnull()]
-    countsTrain = train[feat_names].values
-    outfilename_train = "feature_pickles/count.train.pkl"
-    with open(outfilename_train, "wb") as outfile:
-        cp.dump(feat_names, outfile, -1)
-        cp.dump(countsTrain, outfile, -1)
-
-    test = data[data['target'].isnull()]
-    if data.shape[0] > 0:
-        countsTest = test[feat_names].values
-        outfilename_test = "feature_pickles/count.test.pkl"
-        with open(outfilename_test, 'wb') as outfile:
-            cp.dump(feat_names, outfile, -1)
-            cp.dump(countsTest, outfile, -1)
-
     return countFeature

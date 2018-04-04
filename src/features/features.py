@@ -1,16 +1,32 @@
-from .sentiment import generate_sentiment_analysis_files
-from .count import generate_count_feature
-from .tfidf import generate_tfidf_feature
-from .word2vec import generate_word2vec_feature
-from .svd import generate_svd_feature
+from features.sentiment import generate_sentiment_analysis_files
+from features.count import generate_count_feature
+from features.tfidf import generate_tfidf_feature
+from features.word2vec import generate_word2vec_feature
+from features.svd import generate_svd_feature
+from util import test_set_size, train_set_size
 
 
 def extract_features(data):
+    print('Generating count feature')
     count = generate_count_feature(data)
-    [h_tfidf_train, a_tfidf_train, h_tfidf_test, a_tfidf_test] = generate_tfidf_feature(data)
-    word2vec = generate_word2vec_feature(data)
-    sentiment = generate_sentiment_analysis_files(data)
-    svd = generate_svd_feature(h_tfidf_train, a_tfidf_train, h_tfidf_test, a_tfidf_test)
 
+    print('Generating tfidf feature')
+    [headlineTfidf, bodyTfidf, tfidfVec] = generate_tfidf_feature(data)
+
+    print('Generating word2vec feature')
+    [headlineVec, articleVec, wordVec] = generate_word2vec_feature(data)
+
+    print('Generating sentiment feature')
+    [headlineSent, articleSent] = generate_sentiment_analysis_files(data)
+
+    print('Generating svd feature')
+    svd = generate_svd_feature(
+        headlineTfidf,
+        bodyTfidf,
+        test_set_size(data),
+        train_set_size(data)
+    )
+
+    print('Features generated')
 
     print('done')

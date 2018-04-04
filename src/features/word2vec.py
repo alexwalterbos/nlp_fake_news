@@ -60,21 +60,7 @@ def generate_word2vec_feature(data, numTest=0):
     if testNum > 0:
         simVecTest = simVec[trainNum:]
 
-    # Store in pickles
-    with open('feature_pickles/word2vec_head_train.pkl', "wb") as outfile:
-        pickle.dump(headlineTrain, outfile, -1)
-    with open('feature_pickles/word2vec_article_train.pkl', "wb") as outfile:
-        pickle.dump(articleTrain, outfile, -1)
-    with open('feature_pickles/word2vec_sim_train.pkl', "wb") as outfile:
-        pickle.dump(simVecTrain, outfile, -1)
-    if (testNum > 0):
-        with open('feature_pickles/word2vec_head_test.pkl', "wb") as outfile:
-            pickle.dump(headlineTest, outfile, -1)
-        with open('feature_pickles/word2vec_article_test.pkl', "wb") as outfile:
-            pickle.dump(articleTest, outfile, -1)
-        with open('feature_pickles/word2vec_sim_test.pkl', "wb") as outfile:
-            pickle.dump(simVecTest, outfile, -1)
-    print('made 6 pickle files')
+    return [headlineVec, articleVec, simVec]
 
 
 def read(header='train'):
