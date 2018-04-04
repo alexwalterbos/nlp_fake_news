@@ -14,7 +14,7 @@ targets = dict(zip(targets, range(len(targets))))
 word_pattern = r"(?u)\b\w\w+\b"
 
 
-def read_data_from_fnc_files():
+def read_data_from_fnc_files(limit):
     # Read data from FNC-provided csv files.
     print('Reading data from FNC-provided csv files')
     train_bodies = pd.read_csv('train/train_bodies.csv', encoding='utf-8')
@@ -33,13 +33,12 @@ def read_data_from_fnc_files():
     test_set = pd.merge(test_headlines, test_bodies, how='left', on='Body ID')
 
     # If the command line argument is given, crop the test- and training set to the provided number of entries
-    if len(sys.argv) > 0 and 'limit' in sys.argv:
-        limit = int(sys.argv[sys.argv.index('limit') + 1])
+    if limit is not None:
         training_set = training_set[:limit]
-        print('Training set trimmed by system argument to: ' + str(training_set.shape))
+        print('Training set trimmed to: ' + str(training_set.shape))
 
         test_set = test_set[:limit]
-        print('Test set trimmed by system argument to: ' + str(test_set.shape))
+        print('Test set trimmed to: ' + str(test_set.shape))
 
     # Put the training- and test set in the same DataFrame
     data = pd.concat((training_set, test_set))
@@ -48,16 +47,14 @@ def read_data_from_fnc_files():
     return data
 
 
-def read_data_from_premade_file():
-    # Get the filename from which to read the data
-    filename = sys.argv[sys.argv.index('read') + 1]
+def read_data_from_premade_file(readfile):
     # Check if it exists
-    if not os.path.isfile(filename):
-        print('Cannot read from non-existent file: ' + filename)
+    if not os.path.isfile(readfile):
+        print('Cannot read from non-existent file: ' + readfile)
         return None
     else:
-        print('Reading from file: ' + filename)
-        with open(filename, 'rb') as f:
+        print('Reading from file: ' + readfile)
+        with open(readfile, 'rb') as f:
             data = pickle.load(f, encoding='latin1')
         print('Shape of loaded training set: ' + str(data.shape))
     return data
@@ -121,13 +118,13 @@ def extract_tokens(
     return filtered_stemmed_tokens
 
 
-def preprocess():
+def load_and_preprocess(readfile, limit):
     # Check for read argument, and load data from provided file
-    if len(sys.argv) > 0 and 'read' in sys.argv:
-        data = read_data_from_premade_file()
+    if readfile is not None:
+        data = read_data_from_premade_file(readfile)
     else:
         # Read data from FNC-provided files
-        read_data = read_data_from_fnc_files()
+        read_data = read_data_from_fnc_files(limit)
         data = append_ngrams(read_data)
         print(data.axes)
 

@@ -1,56 +1,57 @@
-#note that you need to download the word2vec bin from google before you run this class, for more information see data_files\readme.txt
+# note that you need to download the word2vec bin from google before you run this class, for more information see data_files\readme.txt
+
+import pickle
 
 import gensim
 import numpy as np
-from sklearn.preprocessing import normalize
-import pickle
 from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.preprocessing import normalize
 
-def generate_tfidf_feature(data, numTest=0):
-    #load model from google
+
+def generate_word2vec_feature(data, numTest=0):
+    # load model from google
     model = gensim.models.KeyedVectors.load_word2vec_format('data_files/GoogleNews-vectors-negative300.bin', binary=True)
 
     headline = data['Headline_unigram']
     article = data['articleBody_unigram']
 
-    #Number of train and test articles
+    # Number of train and test articles
     totalNum = len(headline)
     testNum = numTest
-    trainNum = totalNum-testNum
+    trainNum = totalNum - testNum
 
-
-
-    #For every every headline/article: look up the vectors for every word in it, add them up, and normalize those vectors.
+    # For every every headline/article: look up the vectors for every word in it, add them up, and normalize those vectors.
     i = 0
-    headlineVec=[]
+    headlineVec = []
     for x in headline:
-        z=0
+        z = 0
         for y in x:
             if y in model:
-               z = z +np.add(model.get_vector(y), [0.]*300)
-       headlineVec.append(z)
+                z = z + np.add(model.get_vector(y), [0.] * 300)
+        headlineVec.append(z)
+
     headlineVec = list(headlineVec)
     headlineVec = normalize(headlineVec)
 
     i = 0
-    articleVec=[]
+    articleVec = []
     for x in article:
-        z=0
-       for y in x:
-           if y in model:
-               z = z +np.add(model.get_vector(y), [0.]*300)
-       articleVec.append(z)
+        z = 0
+        for y in x:
+            if y in model:
+                z = z + np.add(model.get_vector(y), [0.] * 300)
+        articleVec.append(z)
     articleVec = list(articleVec)
     articleVec = normalize(articleVec)
 
-    #make seperate variables for tain and test headlines/articles, currently this is not used.
+    # make seperate variables for tain and test headlines/articles, currently this is not used.
     headlineTrain = headlineVec[:trainNum, :]
     articleTrain = articleVec[:trainNum, :]
     if testNum > 0:
         headlineTest = headlineVec[trainNum:, :]
         articleTest = articleVec[trainNum:, :]
 
-    #Calculate cosine-similarity between headlines and respective articles and make variables for train and test similarities.
+    # Calculate cosine-similarity between headlines and respective articles and make variables for train and test similarities.
     simVecTemp = cosine_similarity(headlineVec, articleVec)
     simVec = []
     for i in range(0, totalNum):
@@ -59,21 +60,8 @@ def generate_tfidf_feature(data, numTest=0):
     if testNum > 0:
         simVecTest = simVec[trainNum:]
 
-    #Store in pickles
-    with open('feature_pickles/word2vec_head_train.pkl', "wb") as outfile:
-        pickle.dump(headlineTrain, outfile, -1)
-    with open('feature_pickles/word2vec_article_train.pkl', "wb") as outfile:
-        pickle.dump(articleTrain, outfile, -1)
-    with open('feature_pickles/word2vec_sim_train.pkl', "wb") as outfile:
-        pickle.dump(simVecTrain, outfile, -1)
-    if(testNum>0):
-        with open('feature_pickles/word2vec_head_test.pkl', "wb") as outfile:
-            pickle.dump(headlineTest, outfile, -1)
-        with open('feature_pickles/word2vec_article_test.pkl', "wb") as outfile:
-            pickle.dump(articleTest, outfile, -1)
-        with open('feature_pickles/word2vec_sim_test.pkl', "wb") as outfile:
-            pickle.dump(simVecTest, outfile, -1)
-    print('made 6 pickle files')
+    return [headlineVec, articleVec, simVec]
+
 
 def read(header='train'):
     filename_hvec = "feature_pickles/word2vec_head_%s" % header
