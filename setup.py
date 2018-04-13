@@ -21,6 +21,8 @@ setup(
 	#vector space modelling toolkit
 	'gensim',
 	#machine learning lib with a lot of usefull tools
-	'sklearn'
+	'sklearn',
+    #The tree itself
+    'xgboost' #note installation of xgboost may prove difficult: https://stackoverflow.com/questions/36519898/windows-xgboost-error
     ]
 )
