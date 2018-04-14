@@ -52,13 +52,12 @@ def build_data():
     data['target'] = map(lambda x: targets_dict[x], data['Stance'])
 
     data_y = data['target'].values
-    print(data_y)
     true_data_y = []
-    print()
     for z in data_y:
         for z2 in z:
             true_data_y.append(z2)
-    #print(true_data_y)
+    print()
+    print(len(true_data_y))
 
     # read features
     generators = [
@@ -183,7 +182,6 @@ def train():
     #stances = pd.read_csv("test_stances_unlabeled_processed.csv") # same row order as predicted
     stances = pd.read_csv("../../test/test_stances_unlabeled.csv")  # same row order as predicted
     print(stances.shape)
-    #TODO
 
     df_output = pd.DataFrame()
     df_output['Headline'] = stances['Headline']
@@ -384,3 +382,4 @@ if __name__ == "__main__":
     #df_output['Body ID'] = stances['Body ID']
 
     train()
+    #cv()
