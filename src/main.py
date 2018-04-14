@@ -15,7 +15,6 @@ if __name__ == '__main__':
     shouldReadFromFile = len(sys.argv) > 0 and 'read' in sys.argv
     if shouldReadFromFile:
         readfile = sys.argv[sys.argv.index('read') + 1]
-    limit = -1
     if len(sys.argv) > 0 and 'limit' in sys.argv:
         limit = int(sys.argv[sys.argv.index('limit') + 1])
     main(readfile, limit)
