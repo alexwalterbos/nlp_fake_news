@@ -32,10 +32,10 @@ def extract_features(data):
     '''
 
     with open('features/feature_pickles/train.pkl', "wb") as outfile:
-        pickle.dump(simVec[:train_set_size(data)+1], outfile, -1)
+        pickle.dump(simVec[:train_set_size(data)], outfile, -1)
 
     with open('features/feature_pickles/test.pkl', "wb") as outfile:
-        pickle.dump(simVec[train_set_size(data)+1:], outfile, -1)
+        pickle.dump(simVec[train_set_size(data):], outfile, -1)
 
     print('Features generated')
 
