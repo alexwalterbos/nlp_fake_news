@@ -28,7 +28,7 @@ def extract_features(data):
         train_set_size(data)
     )
 
-    feature_data = numpy.hstack([
+    features = [[
         count,
         headlineTfidf,
         bodyTfidf,
@@ -39,8 +39,12 @@ def extract_features(data):
         headlineSent,
         articleSent,
         svd
-    ])
+    ]]
+    feature_data = numpy.hstack(features)
 
-    print('Features generated')
+    target_data = data['target'].values
+    print(type(target_data))
 
-    print('done')
+    body_ids = data['Body ID'].values
+
+    return [feature_data, target_data, body_ids]
