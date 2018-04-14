@@ -10,7 +10,7 @@ from sklearn.preprocessing import normalize
 
 def generate_word2vec_feature(data, numTest=0):
     # load model from google
-    model = gensim.models.KeyedVectors.load_word2vec_format('data_files/GoogleNews-vectors-negative300.bin', binary=True)
+    model = gensim.models.KeyedVectors.load_word2vec_format('../data_files/GoogleNews-vectors-negative300.bin', binary=True)
 
     headline = data['Headline_unigram']
     article = data['articleBody_unigram']
@@ -20,7 +20,8 @@ def generate_word2vec_feature(data, numTest=0):
     testNum = numTest
     trainNum = totalNum - testNum
 
-    # For every every headline/article: look up the vectors for every word in it, add them up, and normalize those vectors.
+    # For every every headline/article: look up the vectors
+    # for every word in it, add them up, and normalize those vectors.
     i = 0
     headlineVec = []
     for x in headline:
@@ -52,10 +53,12 @@ def generate_word2vec_feature(data, numTest=0):
         articleTest = articleVec[trainNum:, :]
 
     # Calculate cosine-similarity between headlines and respective articles and make variables for train and test similarities.
-    simVecTemp = cosine_similarity(headlineVec, articleVec)
     simVec = []
-    for i in range(0, totalNum):
-        simVec.append(simVecTemp[i, i])
+    for i in range(0, len(headlineVec)):
+        sim = cosine_similarity([headlineVec[i]], [articleVec[i]])
+        for s in sim:
+            for s2 in s:
+                simVec.append(s2)
     simVecTrain = simVec[:trainNum]
     if testNum > 0:
         simVecTest = simVec[trainNum:]
@@ -64,16 +67,18 @@ def generate_word2vec_feature(data, numTest=0):
 
 
 def read(header='train'):
-    filename_hvec = "feature_pickles/word2vec_head_%s" % header
+    """filename_hvec = "feature_pickles/word2vec_head_%s" % header
     with open(filename_hvec, "rb") as infile:
         headlineVec = pickle.load(infile)
 
     filename_bvec = "feature_pickles/word2vec_article_%s" % header
     with open(filename_bvec, "rb") as infile:
         bodyVec = pickle.load(infile)
+    """
 
-    filename_simvec = "feature_pickles/word2vec_sim_%s" % header
+    filename_simvec = "feature_pickles/word2vec_sim_%s.pkl" % header
     with open(filename_simvec, "rb") as infile:
         simVec = pickle.load(infile)
 
-    return [headlineVec, bodyVec, simVec]
+    #return [headlineVec, bodyVec, simVec]
+    return simVec

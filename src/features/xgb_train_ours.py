@@ -35,6 +35,12 @@ params_xgb = {
 
 num_round = 1000
 
+def read(header='train'):
+    filename_simvec = "feature_pickles/%s.pkl" % header
+    with open(filename_simvec, "rb") as infile:
+        simVec = pickle.load(infile)
+    return simVec
+
 def build_data():
 
     # create target variable
@@ -46,6 +52,13 @@ def build_data():
     data['target'] = map(lambda x: targets_dict[x], data['Stance'])
 
     data_y = data['target'].values
+    print(data_y)
+    true_data_y = []
+    print()
+    for z in data_y:
+        for z2 in z:
+            true_data_y.append(z2)
+    #print(true_data_y)
 
     # read features
     generators = [
@@ -55,10 +68,17 @@ def build_data():
         word2vec
         #sentiment
     ]
-    features = [f for g in generators for f in g.read('train')]
+    featuresVar = []
+    for f in read():
+        featuresVar.append([f])
+    data_x = np.array(featuresVar)
 
-    data_x = np.hstack(features)
-    # print data_x[0,:]
+    #print(data_x)
+    #print("")
+    print ("train = ")
+    print(data_x.shape)
+
+    #print (data_x[0,:])
     # print 'data_x.shape'
     # print data_x.shape
     # print 'data_y.shape'
@@ -70,7 +90,7 @@ def build_data():
     #    pickle.dump(data_x, outfile, -1)
     #    #print 'data saved in data_new.pkl'
 
-    return data_x, data_y, data['Body ID'].values
+    return data_x, true_data_y, data['Body ID'].values
 
 def build_test_data():
     # create target variable
@@ -88,11 +108,13 @@ def build_test_data():
         #sentiment
     ]
 
-    features = [f for g in generators for f in g.read("test")]
-    # print len(features)
-    # return 1
+    featuresVar = []
+    for f in read("test"):
+        featuresVar.append([f])
+    data_x = np.array(featuresVar)
 
-    data_x = np.hstack(features)
+    print("test = ")
+    print(data_x.shape)
     # print data_x[0,:]
     # print 'test data_x.shape'
     # print data_x.shape
@@ -100,6 +122,7 @@ def build_test_data():
     # print data['Body ID'].values.shape
     # pair id
     return data_x, data['Body ID'].values
+
 
 def eval_metric(yhat, dtrain):
     y = dtrain.get_label()
@@ -129,8 +152,9 @@ def train():
     # print 'perfect_score: ', perfect_score(data_y)
     # print Counter(data_y)
 
-    print(data_x)
-    print(data_y)
+    print(data_x.size)
+    print(len(data_y))
+    print()
     #data_x = [1, 2, 3]
     #data_y = [2, 3, 4]
     #w = [4, 4, 4]
@@ -152,10 +176,14 @@ def train():
     # print 'pred_y.shape:'
     # print pred_y.shape
     predicted = [LABELS[int(a)] for a in pred_y]
-    ##print predicted
+    print(len(predicted))
+    print()
 
     # save (id, predicted and probabilities) to csv, for model averaging
-    stances = pd.read_csv("test_stances_unlabeled_processed.csv")  # same row order as predicted
+    #stances = pd.read_csv("test_stances_unlabeled_processed.csv") # same row order as predicted
+    stances = pd.read_csv("../../test/test_stances_unlabeled.csv")  # same row order as predicted
+    print(stances.shape)
+    #TODO
 
     df_output = pd.DataFrame()
     df_output['Headline'] = stances['Headline']
@@ -342,5 +370,17 @@ def cv():
     ##print 'on holdout set, score = %f, perfect_score %f' % (s_test, s_test_perf)
 
 if __name__ == "__main__":
-    print (" hello world!")
+    print(" hello world!")
+    stances = pd.read_csv(
+        "../../train/train_stances.csv")  # same row order as predicted
+    print(stances.shape)
+    stances = pd.read_csv(
+        "../../competition_test/competition_test_stances.csv")  # same row order as predicted
+    print(stances.shape)
+    # TODO
+
+    #df_output = pd.DataFrame()
+    #df_output['Headline'] = stances['Headline']
+    #df_output['Body ID'] = stances['Body ID']
+
     train()
