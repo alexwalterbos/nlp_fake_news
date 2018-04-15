@@ -31,12 +31,15 @@ def main(limit):
             print('Saved body_ids')
     else:
         with open(feature_filename, 'rb') as feature_file:
-            feature_data = pickle.load(feature_file, encoding='latin1')
+            feature_data = pickle.load(feature_file)
         with open(target_filename, 'rb') as target_file:
-            target_data = pickle.load(target_file, encoding='latin1')
+            target_data = pickle.load(target_file)
         with open(body_ids_filename, 'rb') as body_ids_file:
-            body_ids = pickle.load(body_ids_file, encoding='latin1')
+            body_ids = pickle.load(body_ids_file)
 
+    print(feature_data.shape)
+    print(target_data.shape)
+    print(body_ids.shape)
     # We now have the feature data, target data and body ids ready for use in XGB.
 
 

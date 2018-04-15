@@ -40,11 +40,9 @@ def extract_features(data):
         articleSent,
         svd
     ]]
+
     feature_data = numpy.hstack(features)
-
     target_data = data['target'].values
-    print(type(target_data))
-
     body_ids = data['Body ID'].values
 
     return [feature_data, target_data, body_ids]
