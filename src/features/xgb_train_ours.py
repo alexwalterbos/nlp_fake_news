@@ -72,11 +72,6 @@ def build_data():
         featuresVar.append([f])
     data_x = np.array(featuresVar)
 
-    #print(data_x)
-    #print("")
-    print ("train = ")
-    print(data_x.shape)
-
     #print (data_x[0,:])
     # print 'data_x.shape'
     # print data_x.shape
@@ -207,26 +202,38 @@ def train():
 def cv():
     data_x, data_y, body_ids = build_data()
 
-    holdout_ids = set([int(x.rstrip()) for x in file('hold_out_ids.txt')])
+
+    file = open('hold_out_ids.txt', "r")
+    #holdout_ids = set([int(x.rstrip()) for x in file('hold_out_ids.txt')])
+    holdout_ids = set([int(x.rstrip()) for x in file])
     # print 'len(holdout_ids): ',len(holdout_ids)
     holdout_idx = [t for (t, x) in enumerate(body_ids) if x in holdout_ids]
     test_x = data_x[holdout_idx]  # features of test set
     # print 'holdout_x.shape: '
     # print test_x.shape
+    data_y_temp = []
+    for y in data_y:
+        data_y_temp.append([y])
+    data_y=data=np.array(data_y_temp)
+    print(data_x.shape)
+    print(data_y.shape)
+    print()
     test_y = data_y[holdout_idx]
     # print Counter(test_y)
     # return 1
 
     # to obtain test dataframe for model averaging
-    body = pd.read_csv("train_bodies.csv")
-    stances = pd.read_csv("train_stances.csv")
+    body = pd.read_csv("../../train/train_bodies.csv")
+    stances = pd.read_csv("../../train/train_stances.csv")
     data = pd.merge(stances, body, how='left', on='Body ID')
     targets = ['agree', 'disagree', 'discuss', 'unrelated']
     targets_dict = dict(zip(targets, range(len(targets))))
     data['target'] = map(lambda x: targets_dict[x], data['Stance'])
     test_df = data.ix[holdout_idx]
 
-    cv_ids = set([int(x.rstrip()) for x in file('training_ids.txt')])
+
+    file = open('training_ids.txt')
+    cv_ids = set([int(x.rstrip()) for x in file])
     # print 'len(cv_ids): ',len(cv_ids)
     cv_idx = [t for (t, x) in enumerate(body_ids) if x in cv_ids]
     cv_x = data_x[cv_idx]
@@ -381,5 +388,5 @@ if __name__ == "__main__":
     #df_output['Headline'] = stances['Headline']
     #df_output['Body ID'] = stances['Body ID']
 
-    train()
-    #cv()
+    #train()
+    cv()
