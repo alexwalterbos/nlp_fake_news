@@ -1,6 +1,7 @@
 import sys
 import pickle
 import os.path
+import dill as pickle
 
 from features.features import extract_features
 from preprocessing.preprocess import load_and_preprocess
