@@ -3,6 +3,7 @@ from features.count import generate_count_feature
 from features.tfidf import generate_tfidf_feature
 from features.word2vec import generate_word2vec_feature
 from features.svd import generate_svd_feature
+import numpy
 from util import test_set_size, train_set_size
 
 
@@ -27,6 +28,21 @@ def extract_features(data):
         train_set_size(data)
     )
 
-    print('Features generated')
+    features = [[
+        count,
+        headlineTfidf,
+        bodyTfidf,
+        tfidfVec,
+        headlineVec,
+        articleVec,
+        wordVec,
+        headlineSent,
+        articleSent,
+        svd
+    ]]
 
-    print('done')
+    feature_data = numpy.hstack(features)
+    target_data = data['target'].values
+    body_ids = data['Body ID'].values
+
+    return [feature_data, target_data, body_ids]

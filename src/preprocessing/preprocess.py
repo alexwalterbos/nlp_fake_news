@@ -118,16 +118,12 @@ def extract_tokens(
     return filtered_stemmed_tokens
 
 
-def load_and_preprocess(readfile, limit):
-    # Check for read argument, and load data from provided file
-    if readfile is not None:
-        data = read_data_from_premade_file(readfile)
-    else:
-        # Read data from FNC-provided files
-        read_data = read_data_from_fnc_files(limit)
-        data = append_ngrams(read_data)
-        print(data.axes)
+def load_and_preprocess(limit):
+    # Read data from FNC-provided files
+    read_data = read_data_from_fnc_files(limit)
+    data = append_ngrams(read_data)
+    print(data.axes)
 
-        print('Successfully loaded data!')
+    print('Successfully loaded data!')
 
     return data
