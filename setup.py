@@ -15,6 +15,8 @@ setup(
         'pandas',
         # The natural language toolkit
         'nltk',
+        # Expansion for pickle
+        'dill',
 		
 	#vector space modelling toolkit
 	'gensim',
