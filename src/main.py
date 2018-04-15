@@ -2,12 +2,29 @@ import sys
 import pickle
 import os.path
 import dill as pickle
+import nltk
 
 from features.features import extract_features
 from preprocessing.preprocess import load_and_preprocess
 
 
 def main(limit):
+    # Install required nltk resources
+    try:
+        nltk.data.find('tokenizers/punkt')
+    except LookupError:
+        nltk.download('punkt')
+
+    try:
+        nltk.data.find('sentiment/vader_lexicon')
+    except LookupError:
+        nltk.download('vader_lexicon')
+
+    try:
+        nltk.data.find('corpora/stopwords')
+    except LookupError:
+        nltk.download('stopwords')
+
     # Generate filenames based on the provided limit argument
     limit_suffix = '_limited_' + str(limit) if limit is not None else ''
     feature_filename = 'data_files/feature_data' + limit_suffix + '.pkl'
