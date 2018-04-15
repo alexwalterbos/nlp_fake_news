@@ -24,7 +24,7 @@ def generate_word2vec_feature(data, numTest=0):
     i = 0
     headlineVec = []
     for x in headline:
-        z = 0
+        z = [0.] * 300
         for y in x:
             if y in model:
                 z = z + np.add(model.get_vector(y), [0.] * 300)
@@ -36,7 +36,7 @@ def generate_word2vec_feature(data, numTest=0):
     i = 0
     articleVec = []
     for x in article:
-        z = 0
+        z = [0.] * 300
         for y in x:
             if y in model:
                 z = z + np.add(model.get_vector(y), [0.] * 300)
