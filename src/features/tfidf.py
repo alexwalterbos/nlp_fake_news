@@ -19,8 +19,6 @@ def generate_tfidf_feature(data):
     headlineNoVec = headline.map(lambda x: ' '.join(x)).tolist()
     articleNoVec = article.map(lambda x: ' '.join(x)).tolist()
 
-    assert trainNum is testNum  # or combining headlines and articles will fail
-
     # Combine headlines and articles
     text_per_article = []
     for i in range(0, trainNum):
