@@ -10,7 +10,7 @@ from sklearn.preprocessing import normalize
 
 def generate_word2vec_feature(data, numTest=0):
     # load model from google
-    model = gensim.models.KeyedVectors.load_word2vec_format('data_files/GoogleNews-vectors-negative300.bin', binary=True, limit=1000)
+    model = gensim.models.KeyedVectors.load_word2vec_format('data_files/GoogleNews-vectors-negative300.bin', binary=True)
 
     headline = data['Headline_unigram']
     article = data['articleBody_unigram']
