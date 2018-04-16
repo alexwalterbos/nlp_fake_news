@@ -2,6 +2,7 @@ import pickle as cp
 from scipy.sparse import vstack
 from sklearn.decomposition import TruncatedSVD
 from sklearn.metrics.pairwise import cosine_similarity
+import numpy as np
 
 def generate_svd_feature(headlineTfidf, articleTfidf, train_num, test_num):
     svd = TruncatedSVD(n_components=50, n_iter=15)
@@ -25,4 +26,4 @@ def generate_svd_feature(headlineTfidf, articleTfidf, train_num, test_num):
         with open(outfilename_test, "wb") as outfile:
             cp.dump(headlineSvdTest, outfile, -1)
 
-    return simSvd
+    return np.asarray(simSvd)

@@ -7,7 +7,7 @@ from sklearn.model_selection import StratifiedKFold, GroupKFold
 
 import xgboost as xgb
 from collections import Counter
-from score import *
+from .score import *
 import pandas as pd
 '''
     10-fold cv on 80% of the data (training_ids.txt)
@@ -16,7 +16,6 @@ import pandas as pd
 '''
 
 params_xgb = {
-
     'max_depth': 6,
     'colsample_bytree': 0.6,
     'subsample': 1.0,
@@ -31,7 +30,7 @@ params_xgb = {
 num_round = 1000
 
 def read(header='train'):
-    filename_simvec = "feature_pickles/%s.pkl" % header
+    filename_simvec = "../../feature_pickles/%s.pkl" % header
     with open(filename_simvec, "rb") as infile:
         simVec = pickle.load(infile)
     return simVec
@@ -151,8 +150,9 @@ def train():
     ##print Counter(predicted_t)
 
 
-def cv():
-    features, labels, body_ids = build_data()
+def cv(features, labels, body_ids):
+    if features is None or labels is None or body_ids is None:
+        features, labels, body_ids = build_data()
 
     #Use the data points with ids in the file hold_out_ids as test data.
     #test_features
@@ -169,8 +169,8 @@ def cv():
     test_labels = labels[holdout_idx]
 
     # to obtain test dataframe for model averaging
-    body = pd.read_csv("../../train/train_bodies.csv")
-    stances = pd.read_csv("../../train/train_stances.csv")
+    body = pd.read_csv("train/train_bodies.csv")
+    stances = pd.read_csv("train/train_stances.csv")
     data = pd.merge(stances, body, how='left', on='Body ID')
     targets = ['agree', 'disagree', 'discuss', 'unrelated']
     targets_dict = dict(zip(targets, range(len(targets))))
@@ -181,6 +181,8 @@ def cv():
     file = open('training_ids.txt')
     cv_ids = set([int(x.rstrip()) for x in file])
     cv_idx = [t for (t, x) in enumerate(body_ids) if x in cv_ids]
+    print(type(features))
+    print(type(features[cv_idx]))
     cv_features = features[cv_idx]
 
     cv_labels = labels[cv_idx]
