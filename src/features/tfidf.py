@@ -1,6 +1,7 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from util import test_set_size, train_set_size
+import numpy as np
 import pickle
 
 
@@ -53,6 +54,7 @@ def generate_tfidf_feature(data):
         simVec.append([cosine_similarity(headlineTfidf[i], articleTfidf[i])[0][0]])
     print(len(simVec))
 
+    simVec = np.asarray(simVec)
     # make seperate variables for tain and test similarites.
     simTfidfTrain = simVec[:trainNum]
     simTfidfTest = simVec[trainNum:]

@@ -10,7 +10,7 @@ from sklearn.preprocessing import normalize
 
 def generate_word2vec_feature(data, numTest=0):
     # load model from google
-    model = gensim.models.KeyedVectors.load_word2vec_format('../data_files/GoogleNews-vectors-negative300.bin', binary=True)
+    model = gensim.models.KeyedVectors.load_word2vec_format('data_files/GoogleNews-vectors-negative300.bin', binary=True)
 
     headline = data['Headline_unigram']
     article = data['articleBody_unigram']
@@ -59,6 +59,7 @@ def generate_word2vec_feature(data, numTest=0):
         for s in sim:
             for s2 in s:
                 simVec.append(s2)
+    simVec = np.asarray(simVec)[:, np.newaxis]
     simVecTrain = simVec[:trainNum]
     if testNum > 0:
         simVecTest = simVec[trainNum:]

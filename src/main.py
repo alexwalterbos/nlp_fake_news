@@ -5,6 +5,7 @@ import dill as pickle
 
 from features.features import extract_features
 from preprocessing.preprocess import load_and_preprocess
+from features.xgb_train_ours import cv
 
 
 def main(limit):
@@ -40,7 +41,10 @@ def main(limit):
     print(feature_data.shape)
     print(target_data.shape)
     print(body_ids.shape)
-    # We now have the feature data, target data and body ids ready for use in XGB.
+
+    print('\nWe now have the feature data, target data and body ids ready for use in XGB.\n')
+
+    cv(feature_data, target_data, body_ids)
 
 
 

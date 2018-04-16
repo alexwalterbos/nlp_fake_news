@@ -23,7 +23,7 @@ def read_data_from_fnc_files(limit):
     # Generate the training set by merging stances and bodies into one DataFrame
     training_set = pd.merge(train_stances, train_bodies, how='left', on='Body ID')
     # Map the existing stance information from a string representation to a numeric one.
-    training_set['target'] = map(lambda x: targets[x], training_set['Stance'])
+    training_set['target'] = list(map(lambda x: targets[x], training_set['Stance']))
     print('Shape of training set: ' + str(training_set.shape))
 
     # Load test data from FNC-provided csv files.

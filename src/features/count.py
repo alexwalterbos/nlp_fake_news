@@ -1,9 +1,8 @@
-import pickle as cp
-
+import pandas as pd
 
 def generate_count_feature(data):
     feat_names = ["Headline", "articleBody"]
-    countFeature = {}
+    countFeature = pd.DataFrame()
 
     # Calculation of the count, unique count and ratio between these two for the Headline unigram
     countFeature["count_Headline_unigram"] = list(data.apply(lambda x: len(x["Headline_unigram"]), axis=1))

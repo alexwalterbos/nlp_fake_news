@@ -9,3 +9,4 @@ src/features/data_files/GoogleNews-vectors-negative300.bin
 
 *.bin
 *.gz
+out
