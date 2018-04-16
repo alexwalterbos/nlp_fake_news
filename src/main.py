@@ -16,27 +16,27 @@ def main(limit):
     body_ids_filename = 'data_files/body_ids_data' + limit_suffix + '.pkl'
 
     # Check if files have been generated for this limit, or generate new feature data if not
-    # if not (os.path.isfile(feature_filename) and os.path.isfile(target_filename) and os.path.isfile(body_ids_filename)):
-    data = load_and_preprocess(limit)
-    [feature_data, target_data, body_ids] = extract_features(data)
-    with open(feature_filename, 'wb') as feature_file:
-        pickle.dump(feature_data, feature_file, -1)
-        print('Saved feature data')
+    if not (os.path.isfile(feature_filename) and os.path.isfile(target_filename) and os.path.isfile(body_ids_filename)):
+        data = load_and_preprocess(limit)
+        [feature_data, target_data, body_ids] = extract_features(data)
+        with open(feature_filename, 'wb') as feature_file:
+            pickle.dump(feature_data, feature_file, -1)
+            print('Saved feature data')
 
-    with open(target_filename, 'wb') as target_file:
-        pickle.dump(target_data, target_file, -1)
-        print('Saved target data')
+        with open(target_filename, 'wb') as target_file:
+            pickle.dump(target_data, target_file, -1)
+            print('Saved target data')
 
-    with open(body_ids_filename, 'wb') as body_ids_file:
-        pickle.dump(body_ids, body_ids_file, -1)
-        print('Saved body_ids')
-    # else:
-    #     with open(feature_filename, 'rb') as feature_file:
-    #         feature_data = pickle.load(feature_file)
-    #     with open(target_filename, 'rb') as target_file:
-    #         target_data = pickle.load(target_file)
-    #     with open(body_ids_filename, 'rb') as body_ids_file:
-    #         body_ids = pickle.load(body_ids_file)
+        with open(body_ids_filename, 'wb') as body_ids_file:
+            pickle.dump(body_ids, body_ids_file, -1)
+            print('Saved body_ids')
+    else:
+        with open(feature_filename, 'rb') as feature_file:
+            feature_data = pickle.load(feature_file)
+        with open(target_filename, 'rb') as target_file:
+            target_data = pickle.load(target_file)
+        with open(body_ids_filename, 'rb') as body_ids_file:
+            body_ids = pickle.load(body_ids_file)
 
     print(feature_data.shape)
     print(target_data.shape)
