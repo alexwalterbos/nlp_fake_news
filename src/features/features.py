@@ -19,7 +19,7 @@ def extract_features(data):
 
 
     # print('Generating sentiment feature')
-    # [headlineSent, articleSent] = generate_sentiment_analysis_files(data)
+    [headlineSent, articleSent, sentVec] = generate_sentiment_analysis_files(data)
 
     test_size = test_set_size(data)
     train_size = train_set_size(data)
@@ -48,6 +48,7 @@ def extract_features(data):
         wordVec,
         # headlineSent,
         # articleSent,
+        sentVec,
         svd
     )
 

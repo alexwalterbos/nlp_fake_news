@@ -1,6 +1,8 @@
 import pickle
 
 import pandas as pd
+import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from nltk.tokenize import sent_tokenize
 
@@ -39,4 +41,10 @@ def generate_sentiment_analysis_files(data):
 
     body_sentiment = data[['b_compound', 'b_neg', 'b_neu', 'b_pos']].values
 
-    return [headline_sentiment, body_sentiment]
+    # Find cosine similarities
+    simVec = []
+    for i in range(0, data.shap[0]):
+        simVec.append([cosine_similarity(headline_sentiment[i], body_sentiment[i])[0][0]])
+    simVec = np.asarray(simVec)
+
+    return [headline_sentiment, body_sentiment, simVec]
