@@ -43,8 +43,8 @@ def generate_sentiment_analysis_files(data):
 
     # Find cosine similarities
     simVec = []
-    for i in range(0, data.shap[0]):
-        simVec.append([cosine_similarity(headline_sentiment[i], body_sentiment[i])[0][0]])
+    for i in range(0, data.shape[0]):
+        simVec.append([cosine_similarity(headline_sentiment[i,:], body_sentiment[i,:])])
     simVec = np.asarray(simVec)
 
     return [headline_sentiment, body_sentiment, simVec]
